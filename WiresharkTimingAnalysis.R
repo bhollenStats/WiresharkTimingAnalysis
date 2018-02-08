@@ -39,10 +39,12 @@ library(ggplot2)
 
 # Variables
 debug <- TRUE
-xmitPacketDissectionFilename <- './AWRT_Transmit_PacketDissections.csv'
-recvPacketDissectionFilename <- './AWRT_Receive_PacketDissections.csv'
-# xmitPacketDissectionFilename <- './AWRT_Transmit_PacketDissections_Test2.csv', sep = ',')
-# recvPacketDissectionFilename <- './AWRT_Receive_PacketDissections_Test2.csv', sep = ',')
+# xmitPacketDissectionFilename <- './AWRT_Transmit_PacketDissections.csv'
+# recvPacketDissectionFilename <- './AWRT_Receive_PacketDissections.csv'
+# xmitPacketDissectionFilename <- './AWRT_Transmit_PacketDissections_Test2.csv'
+# recvPacketDissectionFilename <- './AWRT_Receive_PacketDissections_Test2.csv'
+xmitPacketDissectionFilename <- './AWRT_Transmit_PacketDissections_ManyTests.csv'
+recvPacketDissectionFilename <- './AWRT_Receive_PacketDissections_ManyTests.csv'
 
 # Utility Functions
 dataDump <- function(data) {
@@ -144,7 +146,7 @@ if(debug) dataDump(onlineResponseTimes$deltaTms)
 onlineResponseTimes %>%
   ggplot(aes(x=deltaTms)) +
   geom_histogram(binwidth = 0.01, color = 'darkgreen', fill = 'lightgreen') + 
-  coord_cartesian(xlim = c(0.6,2.25)) + 
+  coord_cartesian(xlim = c(0.35,0.91)) + 
   labs(x = '[ms]',
        y = '',
        title = 'Response Time Distribution',
