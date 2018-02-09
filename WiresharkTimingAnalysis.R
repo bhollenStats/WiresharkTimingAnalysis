@@ -106,34 +106,18 @@ if(debug) head(transactionData)
 transmitDeltaT <- tail(xmitData, -1) - head(xmitData, -1)
 if(debug) dataDump(transmitDeltaT$XmitTimeMs)
 
-# > transmitDeltaT %>% filter(XmitTimeMs >= 102) %>% arrange(desc(XmitTimeMs))
-# PacketNo XmitSeqNo XmitTimeMs
-# 1         1         7   400.1317
-# 2         1         6   300.3711
-# 3         1         6   298.8175
-# 4         1         6   200.3892
-# 5         1         6   200.1406
-# 6         1         6   200.0306
-# 7         1         6   200.0155
-# 8         1         3   146.9256
-# 9         1         3   118.1150
-# 10        1         3   113.2570
-#
-# The larger values appear to be outliers in the recorded packet dissections.  There 
-# are only 7 calculations in the table that appear to be incorrect, especially since
-# the different in the XmitSeqNo is not three (3) but six (6) or seven (7) instead.
-# This could mean that the matching recv packet used for the difference calculation
-# was not the correct one.  
-#
+# Filter out some obvious anomalies
+transmitDeltaT <- transmitDeltaT %>%
+  filter(XmitTimeMs < 200)
 
 transmitDeltaT %>%
   ggplot(aes(x=XmitTimeMs)) +
-  geom_histogram(binwidth = 0.02, color = 'darkgreen', fill = 'lightgreen') + 
-  coord_cartesian(xlim = c(99,101)) + 
+  geom_histogram(binwidth = 0.1, color = 'darkgreen', fill = 'lightgreen') +
+  coord_cartesian(xlim = c(99,101)) +
   labs(x = '[ms]',
        y = '',
        title = 'Time Difference Distribution',
-       subtitle = 'Transmission of Online Commands') + 
+       subtitle = 'Time Difference Between Online Requests in the Driver') +
   theme_dark()
 
 # Evaluation of the response time from the device to the request of online data
@@ -145,12 +129,12 @@ if(debug) dataDump(onlineResponseTimes$deltaTms)
 
 onlineResponseTimes %>%
   ggplot(aes(x=deltaTms)) +
-  geom_histogram(binwidth = 0.01, color = 'darkgreen', fill = 'lightgreen') + 
-  coord_cartesian(xlim = c(0.35,0.91)) + 
+  geom_histogram(binwidth = 0.01, color = 'darkgreen', fill = 'lightgreen') +
+  coord_cartesian(xlim = c(0.35,0.91)) +
   labs(x = '[ms]',
        y = '',
        title = 'Response Time Distribution',
-       subtitle = 'Response Time of Online Commands') + 
+       subtitle = 'Measured Response Times from Device During Testing') +
   theme_dark()
 
 
