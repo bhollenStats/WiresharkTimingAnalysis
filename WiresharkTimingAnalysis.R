@@ -111,8 +111,9 @@ transmitDeltaT <- transmitDeltaT %>%
   filter(XmitTimeMs < 200)
 
 transmitDeltaT %>%
-  ggplot(aes(x=XmitTimeMs)) +
-  geom_histogram(binwidth = 0.1, color = 'darkgreen', fill = 'lightgreen') +
+  ggplot(aes(x=XmitTimeMs, fill = cut(XmitTimeMs, 2000))) +
+  geom_histogram(binwidth = 0.1, show.legend = FALSE) +
+  scale_fill_discrete(h = c(180, 360), c = 100, l = 50) +
   coord_cartesian(xlim = c(99,101)) +
   labs(x = '[ms]',
        y = '',
@@ -128,8 +129,8 @@ onlineResponseTimes <- transactionData %>%
 if(debug) dataDump(onlineResponseTimes$deltaTms)
 
 onlineResponseTimes %>%
-  ggplot(aes(x=deltaTms)) +
-  geom_histogram(binwidth = 0.01, color = 'darkgreen', fill = 'lightgreen') +
+  ggplot(aes(x=deltaTms, fill = cut(deltaTms,2000))) +
+  geom_histogram(binwidth = 0.01, show.legend = FALSE) +
   coord_cartesian(xlim = c(0.35,0.91)) +
   labs(x = '[ms]',
        y = '',
